@@ -7,37 +7,38 @@ public class MyEnemy : MonoBehaviour
 	public GameObject Target, StartBullet; // Цель (помещаем туда игрока, когда тот подходит).
 	public bool Angry; // Проверка сагрили ли мы противника
 	// Проверка, смотрит ли вперед (направо) и проверка, идёт ли сейчас перезарядка
-	bool IsForward = true, Couldown = false;
+	bool IsForward = false, Couldown = false;
 	Vector3 Dir = new Vector3(1, 0);
+	public Vector3 FinalPatrolPoint = new Vector3 (7, 0);//Приращение к вектору патрулирования
+	private Vector3 _startPosition;//Стартовая позиция Патрульного
+	private Vector3 _patrolVector;//Стартовая позиции и приращения
+
+	private void Start()
+	{
+		_startPosition.Set((float)transform.position.x,(float)transform.position.y,0);
+		_patrolVector = _startPosition + FinalPatrolPoint;
+
+	}
+
 	void FixedUpdate()
 	{
-		// Если противник нас заметил входим в режим злости
-		if (Angry)
-		{
-			// смотрим, где находится игрок x < 0 игрок слева, x > 0 справа
+		if (Angry) {
 			float x = Target.transform.position.x - transform.position.x;
-			// разворачиваемся в зависимости от того, где игрок и куда мы смотрим
-			if (x < 0 && IsForward)
-				Flip();
-			else if (x > 0 && !IsForward)
-				Flip();
-			// Если дистанция позволяет атакуем
-			if (Vector3.Distance(transform.position, Target.transform.position) <= MinDistance)
-				Engage(); // Метод атаки
-			// Если мы далековато, двигаемся к цели
+			ChangeDirection(x);
+			if (Vector3.Distance (transform.position, Target.transform.position) <= MinDistance)
+				Engage (); 
 			else
 				transform.position += Dir * Speed * Time.deltaTime;
 		}
-		// Если мы не озлоблены завершаем работу кадра
 		else
-			return;
+			Patrol();
 	}
 	// Метод, нанесения урона противнику
 	public void Hurt(int Damage)
 	{
-		print("Ouch: " + Damage); // Выводим в консоль сообщение о количестве урона
-		Health -= Damage; // Отнимаем жизни
-		if (Health <= 0) // Если жизней вдруг <= 0, умираем
+		print("Ouch: " + Damage);
+		Health -= Damage; 
+		if (Health <= 0) 
 			Die();
 	}
 	// Просто удаляемся со сцены, можно заспаунить пикапик.
@@ -48,12 +49,11 @@ public class MyEnemy : MonoBehaviour
 	// Метод атаки
 	void Engage()
 	{
-		// print(x);
-		// Если мы не на перезарядке, то не атакуем
+
 		if (!Couldown)
 		{
-			Couldown = true; // Включение перезарядки
-			Invoke("Reload", ReloadTime); // Вызываем таймер перезарядки
+			Couldown = true; 
+			Invoke("Reload", ReloadTime); 
 		}
 	}
 	// перезарядка
@@ -61,23 +61,61 @@ public class MyEnemy : MonoBehaviour
 	{
 		Couldown = false;
 	}
-	// Касание нашего триггера
+
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(collision.gameObject.layer == 9) // Если этот триггер игрок
+		if(collision.gameObject.layer == 9) 
 		{
-			Target = collision.gameObject; // Делаем ссылку на игрока
-			Angry = true; // Становимся агрессивными
+			Target = collision.gameObject; 
+			Angry = true; 
 		}
+	}
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		Angry = false;
 	}
 	// разворот
 	void Flip()
 	{
 		IsForward = !IsForward; // Запоминаем, что мы больше не смотрим вправо
-		Dir.x *= -1; // Меняем направление движения
+		Dir.x *= -1; 
 		Vector3 V = transform.localScale; // Берём новую структуру Vector3 и копируем её с нашего scale
-		V.x *= -1; // И меняем её ось x в другую сторону
-		// Присваиваем свою структуру, так как напрямую к localScale.x нам не обратиться
+		V.x *= -1; 
 		transform.localScale = V;
+	}
+	//Изменяем направление взгляда
+	void ChangeDirection(float x)
+	{
+		if (x < 0 && !IsForward)
+			Flip ();
+		else if (x > 0 && IsForward)
+			Flip ();
+	}
+	//изменяем вектор при патрулировании	
+	void changePosition(Vector3 resultVector)
+	{
+		if (resultVector == _startPosition + FinalPatrolPoint) {
+			Flip ();
+			_patrolVector = _startPosition;
+		} else 
+		{
+			Flip ();
+			_patrolVector = _startPosition + FinalPatrolPoint;
+		}
+	}
+	void Patrol()
+	{
+		Debug.Log ("Разница" + (_patrolVector.x - transform.position.x));
+		float x = Mathf.Abs(_patrolVector.x - transform.position.x);
+		transform.position += Dir * Speed * Time.deltaTime;
+		if (x >= 0 && x < 0.2)
+			changePosition (_patrolVector);
+		//Если вышли за предел зоны патрулирования определяем направдение и возвращяемся на старт
+		if (transform.position.x<_startPosition.x||transform.position.x>_startPosition.x+FinalPatrolPoint.x)
+		{
+			float z = _startPosition.x - transform.position.x;
+			ChangeDirection (z);
+			Vector3.MoveTowards(transform.position, _startPosition, Speed*Time.deltaTime);
+		}
 	}
 }
