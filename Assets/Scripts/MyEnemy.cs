@@ -3,7 +3,7 @@
 public class MyEnemy : MonoBehaviour
 { // Выводим всё в public, чтобы смотреть, что происходит с переменными в процессе работы.
 	public int Health, AttackDamage; // Количество жизней и сила атаки
-	public float MinDistance, Speed, ReloadTime; // Дистанция на которой атакует, скорость, время перезарядки.
+	public float MinDistance, Speed, ReloadTime,RayDistance; // Дистанция на которой атакует, скорость, время перезарядки.
 	public GameObject Target, StartBullet; // Цель (помещаем туда игрока, когда тот подходит).
 	public bool Angry; // Проверка сагрили ли мы противника
 	// Проверка, смотрит ли вперед (направо) и проверка, идёт ли сейчас перезарядка
@@ -12,6 +12,8 @@ public class MyEnemy : MonoBehaviour
 	public Vector3 FinalPatrolPoint = new Vector3 (7, 0);//Приращение к вектору патрулирования
 	private Vector3 _startPosition;//Стартовая позиция Патрульного
 	private Vector3 _patrolVector;//Стартовая позиции и приращения
+    private Vector2 _rayVectorDir = new Vector2();
+    private Vector3 _rayVectorStart = new Vector3();
 
 	private void Start()
 	{
@@ -22,7 +24,8 @@ public class MyEnemy : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (Angry) {
+        FindHero();
+        if (Angry) {
 			float x = Target.transform.position.x - transform.position.x;
 			ChangeDirection(x);
 			if (Vector3.Distance (transform.position, Target.transform.position) <= MinDistance)
@@ -59,8 +62,19 @@ public class MyEnemy : MonoBehaviour
 	// перезарядка
 	void Reload()
 	{
-		Couldown = false;
+        Couldown = false;
 	}
+
+    private void FindHero()
+    {
+        RaycastHit2D rkHit = Physics2D.Raycast(transform.position, Vector2.right);
+        for (int y = -2; y < 10; y++)
+        {
+            _rayVectorStart.Set(transform.position.x,transform.position.y+(y * 0.5f), 0);
+            _rayVectorDir.Set(1, 0);
+            Debug.DrawRay(_rayVectorStart, Dir*RayDistance, Color.red);
+        }
+    }
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -105,7 +119,6 @@ public class MyEnemy : MonoBehaviour
 	}
 	void Patrol()
 	{
-		Debug.Log ("Разница" + (_patrolVector.x - transform.position.x));
 		float x = Mathf.Abs(_patrolVector.x - transform.position.x);
 		transform.position += Dir * Speed * Time.deltaTime;
 		if (x >= 0 && x < 0.2)
