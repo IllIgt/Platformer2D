@@ -3,7 +3,7 @@
 
 public class Bullet : MonoBehaviour
 {
-	public GameObject BOOM; // Объект, который спаунится после взрыва
+	//public GameObject BOOM; // Объект, который спаунится после взрыва
 	public int Damage; // Урон, который мы нанесём
 	public float Speed, LifeTime; // Скорость и время жизни снаряда
 	Vector3 Dir = new Vector3 (0,0,0); // Направление полёта
@@ -23,8 +23,13 @@ public class Bullet : MonoBehaviour
 		if (collision.gameObject.tag == "Enemy") // Если объект с которым мы столкнулись имееттэг Enemy
 		{
 			collision.GetComponent<MyEnemy>().Hurt(Damage); // Вызываем метод урона и говорим сколько урона
-			Instantiate(BOOM, transform.position, transform.rotation); // Спауним объект, который симулирует взрыв
+			//Instantiate(BOOM, transform.position, transform.rotation); // Спауним объект, который симулирует взрыв
 			Destroy(gameObject); // Уничтожаем пулю
+		}
+		else if(collision.gameObject.tag == "Turrel")
+		{
+			collision.gameObject.GetComponent<Turrel>().Hurt(Damage);
+			Destroy(gameObject);
 		}
 	}
 }

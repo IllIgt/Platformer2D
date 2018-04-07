@@ -40,7 +40,11 @@ public class MineBomb : MonoBehaviour
 					rBody.AddForce (bombVector*DamageForce);
 					if(rBody.tag == "Enemy")
 					{
-					rBody.gameObject.GetComponent<MyEnemy> ().Hurt((int)(DamageForce*1.5));
+						rBody.gameObject.GetComponent<MyEnemy>().Hurt((int)(DamageForce*1.5));
+					}
+					else if(rBody.tag == "Turrel")
+					{
+						rBody.gameObject.GetComponent<Turrel>().Hurt((int)(DamageForce*1.5));
 					}
 				}
 

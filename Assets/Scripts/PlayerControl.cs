@@ -4,12 +4,15 @@ using System.Collections;
 public class PlayerControl: MonoBehaviour{
 	public float Acceleration; // Скорость движения, а в дальнейшем ускорение
 	public float forceOfJump;
-	public int BombReloadTime;
+	public int BombReloadTime, Health = 5000;
 	public GameObject Bullet,StartBullet, Bomb, BombPosition; // Наш снаряд которым будем стрелять и точка, где он создаётся
 	Vector3 Dir = new Vector3 (0 , 0 ,0); // Направление движения
 	private bool _bombIsReload = true;
 
-
+	public int health
+	{
+		get{return Health;}
+	}
 	void FixedUpdate()
 	{
 
@@ -45,6 +48,17 @@ public class PlayerControl: MonoBehaviour{
 	{
 		_bombIsReload = false;
 		StartCoroutine (BombReloading());
+	}
+
+	public void Hurt(int Damage)
+	{
+		Health -= Damage; 
+		if (Health <= 0) 
+			Die();
+	}
+	void Die()
+	{
+		Destroy(gameObject);
 	}
 
 }

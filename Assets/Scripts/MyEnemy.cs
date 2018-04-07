@@ -12,8 +12,12 @@ public class MyEnemy : MonoBehaviour
 	public Vector3 FinalPatrolPoint = new Vector3 (7, 0);//Приращение к вектору патрулирования
 	private Vector3 _startPosition;//Стартовая позиция Патрульного
 	private Vector3 _patrolVector;//Стартовая позиции и приращения
-    private Vector2 _rayVectorDir = new Vector2();
     private Vector3 _rayVectorStart = new Vector3();
+
+	public int health
+	{
+		get{return Health;}
+	}
 
 	private void Start()
 	{
@@ -31,7 +35,7 @@ public class MyEnemy : MonoBehaviour
 			if (Vector3.Distance (transform.position, Target.transform.position) <= MinDistance)
 				Engage (); 
 			else
-				transform.position += Dir * Speed * Time.deltaTime;
+				transform.position += Dir * Speed*3 * Time.deltaTime;
 		}
 		else
 			Patrol();
@@ -39,7 +43,6 @@ public class MyEnemy : MonoBehaviour
 	// Метод, нанесения урона противнику
 	public void Hurt(int Damage)
 	{
-		print("Ouch: " + Damage);
 		Health -= Damage; 
 		if (Health <= 0) 
 			Die();
@@ -55,10 +58,13 @@ public class MyEnemy : MonoBehaviour
 
 		if (!Couldown)
 		{
-			Couldown = true; 
+			Debug.Log (Target);
+			Target.GetComponent<PlayerControl>().Hurt(AttackDamage);
+			Couldown = true;
 			Invoke("Reload", ReloadTime); 
 		}
 	}
+		
 	// перезарядка
 	void Reload()
 	{
@@ -67,27 +73,21 @@ public class MyEnemy : MonoBehaviour
 
     private void FindHero()
     {
-        RaycastHit2D rkHit = Physics2D.Raycast(transform.position, Vector2.right);
         for (int y = -2; y < 10; y++)
         {
-            _rayVectorStart.Set(transform.position.x,transform.position.y+(y * 0.5f), 0);
-            _rayVectorDir.Set(1, 0);
-            Debug.DrawRay(_rayVectorStart, Dir*RayDistance, Color.red);
+			_rayVectorStart.Set(transform.position.x,transform.position.y+(y * 0.5f), 0);
+			RaycastHit2D rkHit = Physics2D.Raycast(_rayVectorStart, Dir, RayDistance);
+			if(rkHit.collider != null){
+				if (rkHit.collider.gameObject.name == "hero") {
+					Angry = true;
+					Target = rkHit.collider.gameObject;
+				} else
+					Angry = false;
+			}
+            
         }
     }
 
-	private void OnTriggerEnter2D(Collider2D collision)
-	{
-		if(collision.gameObject.layer == 9) 
-		{
-			Target = collision.gameObject; 
-			Angry = true; 
-		}
-	}
-	private void OnTriggerExit2D(Collider2D collision)
-	{
-		Angry = false;
-	}
 	// разворот
 	void Flip()
 	{

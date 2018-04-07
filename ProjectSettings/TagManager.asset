@@ -15,6 +15,7 @@ TagManager:
   - HealthBar
   - DARig
   - Bomb
+  - Turrel
   layers:
   - Default
   - TransparentFX

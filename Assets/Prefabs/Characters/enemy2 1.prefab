@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4737103962494736}
   - component: {fileID: 212436696509464110}
   m_Layer: 0
-  m_Name: Monsters_9
+  m_Name: Turrel_Sprite
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,11 +51,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4741917463663998}
   - component: {fileID: 50020053064068098}
-  - component: {fileID: 114037614178472498}
   - component: {fileID: 61276991961281396}
+  - component: {fileID: 114177102692156136}
   m_Layer: 10
   m_Name: enemy2 1
-  m_TagString: Enemy
+  m_TagString: Turrel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,7 +67,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1414638453791206}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.47, y: -0.51, z: 0}
+  m_LocalPosition: {x: -0.47, y: -0.57, z: 0}
   m_LocalScale: {x: 12, y: 12, z: 1}
   m_Children: []
   m_Father: {fileID: 4741917463663998}
@@ -80,8 +80,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1543178359146348}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -40.49465, y: -6.6831746, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: -26.97, y: 1.71, z: 0}
+  m_LocalScale: {x: -2, y: 2, z: 2}
   m_Children:
   - {fileID: 4936030504206556}
   - {fileID: 4737103962494736}
@@ -120,7 +120,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 7
 --- !u!61 &61276991961281396
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -142,11 +142,11 @@ BoxCollider2D:
     adaptiveTilingThreshold: 0
     drawMode: 0
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   serializedVersion: 2
   m_Size: {x: 1.870079, y: 1.7830703}
   m_EdgeRadius: 0
---- !u!114 &114037614178472498
+--- !u!114 &114177102692156136
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -154,10 +154,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1543178359146348}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f963e22b0e4034d30949b02204915ff0, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f2af5f8475d449c0822e2f0366781f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyHP: 3000
+  FlipTime: 2
+  Health: 3000
+  Damage: 0
+  Cooldown: 1
+  RaycastDistance: 10
+  StopDistance: 15
+  MaxSpeed: 0
+  MoveForce: 0
+  Target: {fileID: 0}
+  Bullet: {fileID: 1390760905498066, guid: eb7edda1fa4d74a93a8668ded36166d0, type: 2}
+  StartBullet: {fileID: 1414638453791206}
+  IsAngry: 0
+  AngryTime: 3
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!212 &212436696509464110
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -189,12 +204,12 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1024582385
-  m_SortingLayer: 4
+  m_SortingLayerID: -1783731295
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300018, guid: 335902fb5fba74948823671b7c9ea1d0, type: 3}
   m_Color: {r: 0.7647059, g: 0.42171282, b: 0.6984726, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.16, y: 0.14}
