@@ -7,18 +7,18 @@ public class EnemyBullet : MonoBehaviour
 	public int Damage; // Урон, который мы нанесём
 	public float Power, LifeTime; // Скорость и время жизни снаряда
 	private Vector2 _Dir;
-	private GameObject Turrel;
+	private GameObject Hero;
 	void Start ()
 	{
 		Destroy(gameObject, LifeTime); // Говорим, что этот объект уничтожится через установленное время
-		Turrel = GameObject.Find("enemy2 1");
+		Hero= GameObject.Find("hero");
 	}
 	void FixedUpdate ()
 	{
-		if (Turrel.GetComponent<Turrel> ().dir.x < 0)
-			_Dir = Vector2.right;
-		else
+		if (transform.position.x-Hero.transform.position.x >= 0)
 			_Dir = Vector2.left;
+		else
+			_Dir = Vector2.right;
 		gameObject.GetComponent<Rigidbody2D> ().AddForce (_Dir*Power);
 	}
 	void OnTriggerEnter2D(Collider2D collision)
