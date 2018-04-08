@@ -9,6 +9,7 @@ public class PlayerControl: MonoBehaviour{
 	Vector3 Dir = new Vector3 (0 , 0 ,0); // Направление движения
 	private bool _bombIsReload = true;
 
+
 	public int health
 	{
 		get{return Health;}
