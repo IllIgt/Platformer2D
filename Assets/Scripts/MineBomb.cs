@@ -54,7 +54,7 @@ public class MineBomb : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.gameObject.tag == "Enemy") // Если объект с которым мы столкнулись имеет тэг Enemy
+		if (collision.gameObject.tag == "Enemy"|| collision.gameObject.tag == "Turrel") // Если объект с которым мы столкнулись имеет тэг Enemy
 		{
 			BombExplode ();
 		}

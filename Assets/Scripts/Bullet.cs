@@ -8,15 +8,30 @@ public class Bullet : MonoBehaviour
 	public float Speed, LifeTime; // Скорость и время жизни снаряда
 	Vector3 Dir = new Vector3 (0,0,0); // Направление полёта
 	Vector3 knifeRotation = new Vector3 (0,0,-10);
-	void Start ()
-	{
-		Dir.x = Speed; // Говорим, что всегда летим по оси х
-		Destroy(gameObject, LifeTime); // Говорим, что этот объект уничтожится через установленное время
-	}
-	void FixedUpdate ()
-	{
-		transform.Rotate(knifeRotation);
-		transform.position += Dir; // Движение снаряда
+    private GameObject Player;
+    void Start()
+    {
+        Dir.x = Speed; // Говорим, что всегда летим по оси х
+        Destroy(gameObject, LifeTime); // Говорим, что этот объект уничтожится через установленное время
+        Player = GameObject.Find("hero");
+
+
+    }
+    void FixedUpdate()
+    {
+        transform.Rotate(knifeRotation);
+        if (Player.GetComponent<PlayerControl>().Fasing)
+        {
+            transform.position += Dir;// Движение снаряда
+            knifeRotation = new Vector3(0, 0, -10);
+        }
+        else
+        {
+            transform.position -= Dir;
+            knifeRotation = new Vector3(0, 0, 10);
+        }
+        Debug.Log("Jg jg" + transform.position);
+
 	}
 	void OnTriggerEnter2D(Collider2D collision)
 	{
