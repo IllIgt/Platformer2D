@@ -2178,7 +2178,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4741917463663998, guid: 79b371dce78dd459bb19e74954f6955d, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1543178359146348, guid: 79b371dce78dd459bb19e74954f6955d, type: 2}
       propertyPath: m_Name
@@ -3013,6 +3013,7 @@ GameObject:
   - component: {fileID: 1638017669}
   - component: {fileID: 1638017666}
   - component: {fileID: 1638017667}
+  - component: {fileID: 1638017671}
   m_Layer: 9
   m_Name: hero
   m_TagString: Player
@@ -3038,14 +3039,14 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
-  BypassListenerEffects: 1
+  BypassListenerEffects: 0
   BypassReverbZones: 0
   rolloffCustomCurve:
     serializedVersion: 2
@@ -3070,7 +3071,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -3094,7 +3095,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: 1
+      value: 0.49
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -3137,6 +3138,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 4096
+  impact: {fileID: 8300000, guid: f73bb2f3e9a61bb4b8700628c4ef16ec, type: 3}
 --- !u!95 &1638017665
 Animator:
   serializedVersion: 3
@@ -3273,6 +3275,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 35.00935}
+--- !u!81 &1638017671
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1638017661}
+  m_Enabled: 1
 --- !u!1001 &1643717871
 Prefab:
   m_ObjectHideFlags: 0
@@ -3976,7 +3985,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4304457387189592, guid: 4c5736ea0764d49c3a6adc2250d33f0f, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1381146829679564, guid: 4c5736ea0764d49c3a6adc2250d33f0f, type: 2}
       propertyPath: m_Name
