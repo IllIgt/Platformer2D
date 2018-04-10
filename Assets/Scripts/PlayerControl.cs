@@ -8,15 +8,26 @@ public class PlayerControl: MonoBehaviour{
 	public GameObject Bullet,StartBullet, Bomb, BombPosition; // Наш снаряд которым будем стрелять и точка, где он создаётся
 	Vector3 Dir = new Vector3 (0 , 0 ,0); // Направление движения
 	private bool _bombIsReload = true;
-
-
+	private Animator anim;
+	private bool isFacingRight = true;
 	public int health
 	{
 		get{return Health;}
 	}
+
+	void Start()
+	{
+		anim = GetComponent<Animator>();
+	}
 	void FixedUpdate()
 	{
+		float move = Input.GetAxis("Horizontal");
+		anim.SetFloat("Speed", Mathf.Abs(move));
+		if(move > 0 && !isFacingRight)
 
+			Flip();
+		else if (move < 0 && isFacingRight)
+			Flip();
 		bool isGroundChecked = Physics2D.Linecast (transform.position, transform.Find ("groundCheck").position, 1 << LayerMask.NameToLayer ("Ground"));
 		if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) // Если нажата стрелка вправо или D
 			GetComponent<Rigidbody2D>().AddForce(Vector2.right*Acceleration);
@@ -60,6 +71,13 @@ public class PlayerControl: MonoBehaviour{
 	void Die()
 	{
 		Destroy(gameObject);
+	}
+	private void Flip()
+	{
+		isFacingRight = !isFacingRight;
+		Vector3 theScale = transform.localScale;
+		theScale.x *= -1;
+		transform.localScale = theScale;
 	}
 
 }
