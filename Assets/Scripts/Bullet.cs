@@ -3,13 +3,21 @@
 
 public class Bullet : MonoBehaviour
 {
+
 	//public GameObject BOOM; // Объект, который спаунится после взрыва
 	public int Damage; // Урон, который мы нанесём
 	public float Speed, LifeTime; // Скорость и время жизни снаряда
 	Vector3 Dir = new Vector3 (0,0,0); // Направление полёта
+	float DirectionSign;
 	Vector3 knifeRotation = new Vector3 (0,0,-10);
     private GameObject Player;
-    void Start()
+
+	public Bullet(Vector3 BulletDirection)
+	{
+		DirectionSign = Mathf.Sign (BulletDirection.x);
+	}
+
+	void Start()
     {
         Dir.x = Speed; // Говорим, что всегда летим по оси х
         Destroy(gameObject, LifeTime); // Говорим, что этот объект уничтожится через установленное время
@@ -22,15 +30,14 @@ public class Bullet : MonoBehaviour
         transform.Rotate(knifeRotation);
         if (Player.GetComponent<PlayerControl>().Fasing)
         {
-            transform.position += Dir;// Движение снаряда
+			transform.position += Dir;// Движение снаряда
             knifeRotation = new Vector3(0, 0, -10);
         }
         else
         {
-            transform.position -= Dir;
+			transform.position -= Dir;
             knifeRotation = new Vector3(0, 0, 10);
         }
-        Debug.Log("Jg jg" + transform.position);
 
 	}
 	void OnTriggerEnter2D(Collider2D collision)

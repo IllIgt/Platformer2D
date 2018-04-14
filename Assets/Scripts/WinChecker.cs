@@ -6,19 +6,22 @@ using UnityEngine.UI;
 public class WinChecker : MonoBehaviour {
     private int Enemies;
     public Image Win;
+    private GameManager _gameManager;
 
+    private void Awake()
+    {
+        _gameManager = FindObjectOfType<GameManager>();
+    }
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void FixedUpdate () 
+    {
         Enemies = FindObjectsOfType<MyEnemy>().Length + FindObjectsOfType<Turrel>().Length;
-        Debug.Log("!!!!!!!!          " + Enemies);
         if (Enemies == 0)
         {
-            Instantiate(Win, GameObject.Find("Canvas").transform);
-            Time.timeScale = 0;
-            
+            _gameManager.ShowWinPanel();   
         }
-        Debug.Log("!!!!!!!!          " + GameObject.Find("WinSprite"));
 
     }
 }
+

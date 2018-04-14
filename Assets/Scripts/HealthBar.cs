@@ -18,7 +18,6 @@ public class HealthBar : MonoBehaviour {
 	void OnGUI()
 	{
 		barValue = Hero.GetComponent<PlayerControl>().health;
-		Debug.Log ("111" + Hero.GetComponent<PlayerControl> ().health);
 		_healthBar.value = barValue;
 	}
 		//for this example, the bar display is linked to the current time,
